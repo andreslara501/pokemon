@@ -20,14 +20,16 @@ const router = new Router({
 			component: Loading,
 		},
 		{
-			path: '/pokemons',
+			path: '/pokemons/',
 			name: 'pokemons',
 			component: Pokemons,
-		},
-		{
-			path: '/pokemons/search/:search',
-			name: 'pokemonsSearch',
-			component: Pokemons,
+			children: [
+				{
+					// when /user/:id/profile is matched
+					path: 'search/:search',
+					component: Pokemons
+				},
+			]
 		},
 	],
 });

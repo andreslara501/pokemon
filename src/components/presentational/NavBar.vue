@@ -3,6 +3,7 @@
     <div class="content">
       <v-row>
         <v-col>
+
           <v-btn
             :class="(!this.$store.getters.getTypeFilter) ? 'gray':''"
             depressed

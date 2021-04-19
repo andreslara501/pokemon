@@ -19,6 +19,17 @@ const api = {
       router.push('/')
       return error.response
     })
+  },
+  async getPokemon (pokemon) {
+    return await configService(`pokemon/${pokemon}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .catch(function (error) {
+      return error.response
+    })
   }
 }
 

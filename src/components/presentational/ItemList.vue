@@ -1,6 +1,8 @@
 <template>
-  <div class="itemList">
-    <span>{{item.name}}</span>
+  <div
+    class="itemList"
+  >
+    <span @click="setPokemon(item)">{{item.name}}</span>
     <div
       class="star"
       @click="setFav(item.name)"
@@ -18,6 +20,8 @@
 </template>
 
 <script>
+import api from '../../api/api';
+
 export default {
   name: 'ItemList',
 
@@ -30,21 +34,38 @@ export default {
     fav: false
   }),
 
+  watch: {
+      '$store.getters.getFavorites': function() {
+        if (this.item.name == this.$store.getters.getPokemon["name"]) {
+          //this.setFav(this.item.name)
+          this.fav = !this.fav;
+        }
+      },
+  },
+
   mounted (){
     this.fav = this.item.fav;
   },
 
   methods: {
-    setFav(pokemon){
+    setFav (pokemon) {
       this.fav = !this.fav;
       if (this.fav) {
         this.$store.commit('SET_FAVORITE', pokemon);
       } else {
         this.$store.commit('DELETE_FAVORITE', pokemon);
       }
+    },
+
+    async setPokemon (pokemon) {
+      const pokemonResult = await api.getPokemon(pokemon.name);
+      if (pokemonResult) {
+        pokemonResult.data.fav = this.fav;
+        this.$store.commit('SET_POKEMON', pokemonResult.data);
+      }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
@@ -60,6 +81,12 @@ export default {
     display: flex;
     span{
       padding: 5px 10px;
+      display: block;
+      cursor: pointer;
+      transition:0.5s;
+      &:hover{
+        color: red;
+      }
     }
   }
   .star{

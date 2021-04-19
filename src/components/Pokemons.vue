@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Pokemon/>
     <div
       id="pokemons"
       class="content"
@@ -27,11 +28,11 @@
           You look lost on your journey!
         </p>
         <v-btn
-          to="/loading"
+          to="/pokemons/"
           depressed
           rounded
         >
-          Get started
+          Go back home
         </v-btn>
       </div>
     </div>
@@ -43,6 +44,7 @@
 import InputSearch from './presentational/InputSearch'
 import NavBar from './presentational/NavBar'
 import ItemList from './presentational/ItemList'
+import Pokemon from './Pokemon'
 
 import suggestApi from '../api/suggest';
 
@@ -52,7 +54,8 @@ export default {
   components: {
     InputSearch,
     NavBar,
-    ItemList
+    ItemList,
+    Pokemon
   },
 
   props: ['search'],
@@ -81,11 +84,20 @@ export default {
       this.assignFavs();
       this.filterPokemons();
     },
+    '$route.params.search': function() {
+      if (this.$route.params.search) {
+        this.$store.commit('SET_SEARCH_TEXT', this.$store.getters.getSearchText);
+      } else {
+        this.$store.commit('SET_SEARCH_TEXT', '');
+      }
+    },
   },
 
   mounted(){
     if (this.$route.params.search) {
       this.$store.commit('SET_SEARCH_TEXT', this.$route.params.search);
+    } else {
+      this.$store.commit('SET_SEARCH_TEXT', '');
     }
     this.restorePokemons();
     this.filterPokemons();
@@ -152,11 +164,11 @@ export default {
       }
     },
     changeUrl () {
-      this.$store.commit('SET_SEARCH_TEXT', this.$route.params.search);
+      this.$store.commit('SET_SEARCH_TEXT', this.suggestQuery);
       this.pokemons = this.$store.getters.getPokemons;
       this.assignFavs();
       this.filterPokemons();
-      window.location = `/pokemons/search/${this.suggestQuery}`;
+
     }
   }
 };

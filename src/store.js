@@ -8,7 +8,8 @@ export default new Vuex.Store({
     pokemons: '',
     searchText: '',
     favorites: '[]',
-    typeFilter: 0
+    typeFilter: 1,
+    pokemon: false
   },
 
   mutations: {
@@ -34,9 +35,12 @@ export default new Vuex.Store({
       localStorage.setItem('favorites', JSON.stringify(favorites));
     },
     SET_TYPE_FILTER: function(state, type) {
-      localStorage.setItem('typeFilter', JSON.stringify(type));
+      localStorage.setItem('typeFilter', type);
       state.typeFilter = type;
     },
+    SET_POKEMON: function(state, pokemon) {
+      state.pokemon = pokemon;
+    }
   },
 
   getters: {
@@ -60,6 +64,9 @@ export default new Vuex.Store({
     },
     getTypeFilter: state => {
       return state.typeFilter;
+    },
+    getPokemon: state => {
+      return state.pokemon;
     },
   }
 })

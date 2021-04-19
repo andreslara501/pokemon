@@ -20,6 +20,12 @@ export default {
     text: ''
   }),
 
+  watch: {
+    '$store.getters.getSearchText': function() {
+      this.text = this.$store.getters.getSearchText;
+    }
+  },
+
   mounted (){
     this.text = this.$store.getters.getSearchText;
   },
